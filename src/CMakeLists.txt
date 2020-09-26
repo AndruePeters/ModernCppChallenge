@@ -1,0 +1,2 @@
+add_subdirectory(chapters)
+add_subdirectory(libraries)
