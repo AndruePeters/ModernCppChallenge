@@ -12,6 +12,10 @@ include(cmake/GitFunction.cmake)
 add_library(project_options INTERFACE)
 target_compile_features(project_options INTERFACE cxx_std_17)
 
+# Link libraries together that are used in nearly every problem
+add_library(project_common_libraries INTERFACE)
+target_link_libraries(project_common_libraries INTERFACE project_options project_warnings CONAN_PKG::fmt CONAN_PKG::docopt.cpp math_lib)
+
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
   option(ENABLE_BUILD_WITH_TIME_TRACE "Enable -ftime-trace to generate time tracing .json files on clang" OFF)
   if(ENABLE_BUILD_WITH_TIME_TRACE)
