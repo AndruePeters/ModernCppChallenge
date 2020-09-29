@@ -31,7 +31,7 @@ namespace math {
 template <class Integer>
 std::vector<Integer> prime_sieve_eratosthenes(const Integer& limit)
 {
-    const Integer numPrimes = limit / static_cast<Integer>(std::log10(limit));
+    const Integer numPrimes = limit < 10 ? 4 : limit / static_cast<Integer>(std::log10(limit));
     std::vector<Integer> primes {Integer(2), Integer(3)};
     primes.reserve(numPrimes);
 
@@ -107,7 +107,7 @@ std::vector<Integer> prime_sieve_sundaram(const Integer& limit)
 template <class Integer>
 std::vector<Integer> prime_sieve_atkin(const Integer& limit)
 {
-    const Integer numPrimes = limit / static_cast<Integer>(std::log10(limit));
+    const Integer numPrimes = limit < 10 ? 4 : limit / static_cast<Integer>(std::log10(limit));
 
     std::vector<Integer> results {2, 3, 5};
     results.reserve(numPrimes);
