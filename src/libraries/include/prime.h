@@ -6,6 +6,9 @@
 #ifndef DRUE_PROJECT_EULER_PRIME_H_
 #define DRUE_PROJECT_EULER_PRIME_H_
 
+// Library includes
+#include <gen_math.h>
+
 // STL includes
 #include <algorithm>
 #include <cmath>
@@ -15,11 +18,8 @@
 // Boost includes
 #include <boost/container/flat_map.hpp>
 
-// Library includes
-#include <gen_math.h>
-
-#include <iostream>
-
+// Third party includes
+#include <fmt/core.h>
 
 namespace math {
 ///
@@ -35,7 +35,13 @@ template <class Integer>
 std::vector<Integer> prime_sieve_eratosthenes(const Integer& limit)
 {
     // estimate the number of primes less than limit
-    const Integer numPrimes = limit / static_cast<Integer>(std::log10(limit));
+    const Integer numPrimes = [limit]{
+        if (limit < 10) {
+            return static_cast<Integer>(4);
+        }
+        return limit / static_cast<Integer>(std::log10(limit));
+        }();
+
 
     // this vector stores the primes, preload with 2, 3, 5, and 7
 
@@ -185,12 +191,16 @@ boost::container::flat_map<Integer, Integer> prime_factorization(const Integer& 
     boost::container::flat_map<Integer, Integer> primePairs;
     
     Integer n = factorize;
-    
     for (const auto prime: primes) {
         while ((n % prime) == 0) {
             n = n / prime;
             ++primePairs[prime];
         }
+    }
+
+    // n at this point is a prime number
+    if (n > 2) {
+        ++primePairs[n];
     }
 
     return primePairs;
