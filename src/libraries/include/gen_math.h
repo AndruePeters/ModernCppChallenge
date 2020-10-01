@@ -11,7 +11,7 @@
 namespace math {
 ///
 /// \brief Constant time evaluation of the sum of integers from 1 to n
-/// Evaluation of the series: E[k=1 to n] (k) 
+/// Evaluation of the series: E[k=1 to n] (k)
 ///
 /// Assumptions: n > 1
 template <class Integer> constexpr
@@ -23,8 +23,8 @@ Integer  consecutive_sum(const Integer& n)
 ///
 /// \brief Calculates the some number, n, raises to a power, p => n^p
 /// There are probably better solutions, but this can be calculated at compile-time.
-template <class Integer> 
-Integer pow(const Integer& n, const Integer& p) 
+template <class Integer>
+Integer pow(const Integer& n, const Integer& p)
 {
     Integer result = n;
     for (Integer i = 0; i < p-1; ++i) {
@@ -51,6 +51,13 @@ unsigned fibonacci(const unsigned n);
 /// Uses boost::flat_map to cache results via memoization
 /// I've kept this method mostly for benchmarking and a reminder for the future.
 unsigned fibonacci_memoization(const unsigned n);
+
+/// \return Abundance of n
+long abundance(long n);
+
+/// \return Sum of divisors of n
+long divisor_sum(long n);
+
 
 ///
 /// \brief Returns log base b of x

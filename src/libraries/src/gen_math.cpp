@@ -3,13 +3,13 @@
 /// \date 3/21/20
 /// \brief Implementation of math functions
 
+/// Library includes
 #include <gen_math.h>
+#include <prime.h>
 
-#include <boost/container/flat_map.hpp>
+/// 3rd Party Includes
+#include <fmt/core.h>
 #include <unsupported/Eigen/MatrixFunctions>
-#include <unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h>
-#include <Eigen/Dense>
-#include <Eigen/Core>
 
 namespace math {
 
@@ -80,6 +80,46 @@ unsigned fib_memoization(const unsigned n)
     } else {
         return it->second;
     }
+}
+
+/// \return Sum of the factors of \p n
+long divisor_sum(long n)
+{
+    // retrieve all factors
+    auto factors = math::prime_factorization(n);
+
+    // for this formula, you need to remove 1 and n
+    factors.erase(1);
+    factors.erase(n);
+
+    // if the size is 0 after removing 1 and n, then this is a prime number
+    // so return its divisor sum which is n + 1
+    if (factors.size() == 0) {
+        return n + 1;
+    }
+
+    // first stage of calculating the divisor sum
+    // don't know a mathematical term or good name
+    auto evaluateFactor = [](std::pair<unsigned long, unsigned long> pair ) {
+        return (math::pow(pair.first, pair.second+1) - 1) / (pair.first - 1);
+    };
+
+    // evaluate every factor and multiply them together
+    // order does not matter
+    return  std::transform_reduce(
+        std::execution::par_unseq,
+        factors.begin(), factors.end(),
+        1ul,
+        std::multiplies<>(),
+        evaluateFactor
+    );
+}
+
+/// \return Abundance of n
+long abundance(long n)
+{
+    const auto divisorSum = divisor_sum(n);
+    return divisorSum - 2 *n;
 }
 
 } // namespace math
